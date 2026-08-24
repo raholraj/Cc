@@ -84,7 +84,7 @@ jobs:
 
           android {
               namespace "com.kakashi.apk3dextractor"
-              compileSdk 35
+              compileSdk 36
               ndkVersion flutter.ndkVersion
 
               compileOptions {
