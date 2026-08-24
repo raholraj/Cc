@@ -16,7 +16,13 @@ jobs:
         run: |
           unzip -o apk_3d_extractor_fixed.zip -d .
 
-      - name: Fix Gradle + Dart for Flutter 3.24
+      - name: Apply source fixes (native unzip + Dart API)
+        run: |
+          cp source_fixes/main.dart apk_3d_extractor/lib/main.dart
+          cp source_fixes/apk_extractor.dart apk_3d_extractor/lib/services/apk_extractor.dart
+          cp source_fixes/pubspec.yaml apk_3d_extractor/pubspec.yaml
+
+      - name: Fix Gradle for Flutter 3.24
         run: |
           cat > apk_3d_extractor/android/settings.gradle << 'ENDOFFILE'
           pluginManagement {
@@ -112,11 +118,6 @@ jobs:
           }
           ENDOFFILE
           sed -i 's/^          //' apk_3d_extractor/android/app/build.gradle
-
-          # Fix Dart API for Flutter 3.24
-          sed -i 's/navigationBarColor:/systemNavigationBarColor:/g' apk_3d_extractor/lib/main.dart
-          sed -i 's/navigationBarIconBrightness:/systemNavigationBarIconBrightness:/g' apk_3d_extractor/lib/main.dart
-          sed -i 's/CardThemeData(/CardTheme(/g' apk_3d_extractor/lib/main.dart
 
       - name: Setup Java
         uses: actions/setup-java@v4
