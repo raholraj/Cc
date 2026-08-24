@@ -1,0 +1,46 @@
+name: apk_3d_extractor
+description: APK se 3D Models aur Assets extract karo - bina code decompile kare
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # File picking
+  file_picker: ^6.1.1
+
+  # APK = ZIP file extract karna (fallback, simple zips ke liye)
+  archive: ^3.6.0
+
+  # Native unzip (Android/iOS ka platform zip engine) — real signed APKs
+  # (APK Signing Block v2/v3 + zipalign extra fields) properly handle karta hai
+  flutter_archive: ^6.0.3
+
+  # Android permissions
+  permission_handler: ^11.3.1
+
+  # Temp/cache directories
+  path_provider: ^2.1.4
+  path: ^1.9.0
+
+  # 3D Model viewer (GLB/GLTF ke liye)
+  model_viewer_plus: ^1.7.2
+
+  # File share/export
+  share_plus: ^10.0.0
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
