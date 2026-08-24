@@ -45,7 +45,7 @@ jobs:
 
           include ":app"
           ENDOFFILE
-          sed -i 's/^[[:space:]]*//' apk_3d_extractor/android/settings.gradle
+          sed -i 's/^          //' apk_3d_extractor/android/settings.gradle
 
           cat > apk_3d_extractor/android/build.gradle << 'ENDOFFILE'
           allprojects {
@@ -67,7 +67,7 @@ jobs:
               delete rootProject.buildDir
           }
           ENDOFFILE
-          sed -i 's/^[[:space:]]*//' apk_3d_extractor/android/build.gradle
+          sed -i 's/^          //' apk_3d_extractor/android/build.gradle
 
           cat > apk_3d_extractor/android/app/build.gradle << 'ENDOFFILE'
           plugins {
@@ -112,7 +112,7 @@ jobs:
               source '../..'
           }
           ENDOFFILE
-          sed -i 's/^[[:space:]]*//' apk_3d_extractor/android/app/build.gradle
+          sed -i 's/^          //' apk_3d_extractor/android/app/build.gradle
 
       - name: Setup Java
         uses: actions/setup-java@v4
