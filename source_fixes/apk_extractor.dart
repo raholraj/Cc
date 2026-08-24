@@ -174,9 +174,27 @@ class ApkExtractor {
     List<AssetItem> assets, {
     void Function(int done, int total)? onProgress,
   }) async {
-    final downloadDir = '/storage/emulated/0/Download/APK_3D_Assets';
-    final dest = Directory(downloadDir);
-    if (!dest.existsSync()) dest.createSync(recursive: true);
+    // Pehle public Downloads folder try karo
+    String downloadDir = '/storage/emulated/0/Download/APK_3D_Assets';
+    bool usingFallback = false;
+
+    try {
+      final dest = Directory(downloadDir);
+      if (!dest.existsSync()) dest.createSync(recursive: true);
+      // Quick write-permission test
+      final testFile = File(p.join(downloadDir, '.write_test'));
+      testFile.writeAsStringSync('ok');
+      testFile.deleteSync();
+    } catch (_) {
+      // ─── FALLBACK: app ka apna external folder (koi special permission nahi chahiye) ───
+      // MANAGE_EXTERNAL_STORAGE grant nahi hui ho ya OEM ne block kar diya ho,
+      // is case mein yeh hamesha likh sakta hai.
+      usingFallback = true;
+      final appExternalDir = await getExternalStorageDirectory();
+      downloadDir = p.join(appExternalDir?.path ?? (await getTemporaryDirectory()).path, 'APK_3D_Assets');
+      final dest = Directory(downloadDir);
+      if (!dest.existsSync()) dest.createSync(recursive: true);
+    }
 
     final List<String> exported = [];
     final List<String> failed = [];
@@ -195,6 +213,7 @@ class ApkExtractor {
       exportedPaths: exported,
       failedNames: failed,
       outputDir: downloadDir,
+      usedFallback: usingFallback,
     );
   }
 
@@ -214,11 +233,13 @@ class ExportResult {
   final List<String> exportedPaths;
   final List<String> failedNames;
   final String outputDir;
+  final bool usedFallback;
 
   const ExportResult({
     required this.exportedPaths,
     required this.failedNames,
     required this.outputDir,
+    this.usedFallback = false,
   });
 
   int get successCount => exportedPaths.length;
