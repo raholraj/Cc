@@ -18,7 +18,7 @@ jobs:
 
       - name: Fix Gradle files for modern Flutter plugin
         run: |
-          cat > apk_3d_extractor/android/settings.gradle << 'EOF'
+          cat > apk_3d_extractor/android/settings.gradle << 'ENDOFFILE'
           pluginManagement {
               def flutterSdkPath = {
                   def properties = new Properties()
@@ -44,9 +44,11 @@ jobs:
           }
 
           include ":app"
-          EOF
+          ENDOFFILE
+          # Remove leading spaces from the file (YAML indentation artifact)
+          sed -i 's/^          //' apk_3d_extractor/android/settings.gradle
 
-          cat > apk_3d_extractor/android/build.gradle << 'EOF'
+          cat > apk_3d_extractor/android/build.gradle << 'ENDOFFILE'
           allprojects {
               repositories {
                   google()
@@ -65,9 +67,10 @@ jobs:
           tasks.register("clean", Delete) {
               delete rootProject.buildDir
           }
-          EOF
+          ENDOFFILE
+          sed -i 's/^          //' apk_3d_extractor/android/build.gradle
 
-          cat > apk_3d_extractor/android/app/build.gradle << 'EOF'
+          cat > apk_3d_extractor/android/app/build.gradle << 'ENDOFFILE'
           plugins {
               id "com.android.application"
               id "org.jetbrains.kotlin.android"
@@ -90,7 +93,7 @@ jobs:
 
               defaultConfig {
                   applicationId "com.kakashi.apk3dextractor"
-                  // model_viewer_plus needs minSdk 21
+                  # model_viewer_plus needs minSdk 21
                   minSdkVersion 21
                   targetSdkVersion flutter.targetSdkVersion
                   versionCode flutter.versionCode
@@ -109,7 +112,8 @@ jobs:
           flutter {
               source '../..'
           }
-          EOF
+          ENDOFFILE
+          sed -i 's/^          //' apk_3d_extractor/android/app/build.gradle
 
       - name: Setup Java
         uses: actions/setup-java@v4
