@@ -6,7 +6,7 @@
 import 'dart:io';
 import 'dart:isolate';
 import 'package:archive/archive_io.dart';
-import 'package:flutter_archive/flutter_archive.dart';
+import 'package:flutter_archive/flutter_archive.dart' as fa;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../models/asset_item.dart';
@@ -69,7 +69,7 @@ class ApkExtractor {
       // Native unzip in dono cheezon ko sahi handle karta hai.
       bool nativeSuccess = false;
       try {
-        await ZipFile.extractToDirectory(
+        await fa.ZipFile.extractToDirectory(
           zipFile: File(apkPath),
           destinationDir: Directory(extractDir),
         );
